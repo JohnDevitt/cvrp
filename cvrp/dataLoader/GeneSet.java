@@ -13,6 +13,7 @@ public class GeneSet {
 	
 	private static GeneSet instance;
 	private static HashSet<Gene> geneSet;
+	private static Gene depot;
 	private static int size;
 	
 	private GeneSet() {
@@ -37,8 +38,12 @@ public class GeneSet {
 			e.printStackTrace();
 		}
 		
+		depot = new Gene(1, (int)CVRPData.getLocation(1).getX(), (int)CVRPData.getLocation(1).getY(),
+				CVRPData.getDemand(1));
+		
 		for(int i = 1; i <= CVRPData.NUM_NODES; i++) {
-			Gene gene = new Gene((int)CVRPData.getLocation(i).getX(), (int)CVRPData.getLocation(i).getY());
+			Gene gene = new Gene(i, (int)CVRPData.getLocation(i).getX(), (int)CVRPData.getLocation(i).getY(),
+					CVRPData.getDemand(i));
 			geneSet.add(gene);
 		}
 		
@@ -53,6 +58,11 @@ public class GeneSet {
 	public static int size() {
 		GeneSet.getInstance();
 		return size;
+	}
+	
+	public static Gene getDepot() {
+		GeneSet.getInstance();
+		return depot;
 	}
 
 	@Override

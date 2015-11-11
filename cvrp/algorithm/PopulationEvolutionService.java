@@ -12,8 +12,8 @@ public class PopulationEvolutionService {
 	public static Population evolvePopulation(Population population) {
 		Population nextGenPopulation = new Population(population.size());
  		for(int i = 0; i < population.size()/2; i++) {
-			Chromosone father = selection(population);
-			Chromosone mother = selection(population);
+			Chromosone father = SelectionService.select(population);
+			Chromosone mother = SelectionService.select(population);
 			nextGenPopulation.setChromosone(i, CrossoverService.pmxCrossover(father, mother));
 			nextGenPopulation.setChromosone(i, CrossoverService.pmxCrossover(mother, father));
 		}
@@ -24,23 +24,5 @@ public class PopulationEvolutionService {
  			}
  		}
 		return nextGenPopulation;
-	}
-	
-	public static void mutate(Chromosone chromosone) {
-		int i = (int)(Math.random() * GeneSet.size());
-		int j = (int)(Math.random() * GeneSet.size());
-		
-		Gene tmpGene = chromosone.getGene(j);
-		chromosone.setGene(j, chromosone.getGene(i));
-		chromosone.setGene(i, tmpGene);
-	}
-	
-	public static Chromosone selection(Population population) {
-		Population tournament = new Population(5);
-		for(int i = 0; i < 5; i++) {
-			int index = (int) (Math.random() * population.size());
-			tournament.setChromosone(i, population.getChromosone(index));
-		}
-		return tournament.getFittest();
 	}
 }

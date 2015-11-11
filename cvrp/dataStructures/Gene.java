@@ -4,23 +4,32 @@ public class Gene {
 
 //--------------------------------------- CLASS VARIBLES --------------------------------//
 	
+	private int index;
 	private int x;
 	private int y;
+	private int demand;
 	
 //------------------------------------- CONSTRUCTORS -------------------------------------//
 	
-	public Gene(int x, int y) {
+	public Gene(int index, int x, int y, int demand) {
+		this.index = index;
 		this.x = x;
 		this.y = y;
+		this.demand = demand;
 	}
 	
 	// Fix to allow negatives
 	public Gene() {
 		x = (int)(Math.random() * 100);
 		y = (int)(Math.random() * 100);
+		demand = (int)(Math.random() * 100);
 	}
 
 //--------------------------------- GETTERS AND SETTERS --------------------------------//
+	
+	public int getIndex() {
+		return index;
+	}
 	
 	public int getX() {
 		return x;
@@ -28,6 +37,10 @@ public class Gene {
 	
 	public int getY() {
 		return y;
+	}
+	
+	public int getDemand() {
+		return demand;
 	}
 	
 //------------------------------ FITNESS RELATED FUNCTIONS --------------------------------//

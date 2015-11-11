@@ -27,7 +27,7 @@ public class MutableGeneSet {
 	}
 	
 	public int size() {
-		return GeneSet.size();
+		return geneList.size();
 	}
 	
 	@Override
