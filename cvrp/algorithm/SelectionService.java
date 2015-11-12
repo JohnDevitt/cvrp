@@ -6,12 +6,16 @@ import cvrp.dataStructures.Population;
 public class SelectionService {
 	
 	public static Chromosone select(Population population) {
-		Population tournament = new Population(5);
-		for(int i = 0; i < 5; i++) {
+		int tournamentSize = 5;
+		
+		Chromosone fittest = population.getChromosone((int) (Math.random() * population.size()));
+		for(int i = 0; i < tournamentSize - 1; i++) {
 			int index = (int) (Math.random() * population.size());
-			tournament.setChromosone(i, population.getChromosone(index));
+			if(population.getChromosone(index).getFitness() < fittest.getFitness()) {
+				fittest = population.getChromosone(index);
+			}
 		}
-		return tournament.getFittest();
+		
+		return fittest;
 	}
-
 }

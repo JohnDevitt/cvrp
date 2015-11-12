@@ -5,16 +5,6 @@ import cvrp.dataStructures.Gene;
 import cvrp.dataLoader.GeneSet;
 
 public class MutationService {
-	/*
-	public static void rsmMutate(Chromosone chromosone) {
-		int i = (int)(Math.random() * GeneSet.size());
-		int j = (int)(Math.random() * GeneSet.size());
-		
-		Gene tmpGene = chromosone.getGene(j);
-		chromosone.setGene(j, chromosone.getGene(i));
-		chromosone.setGene(i, tmpGene);
-	}
-	*/
 	
 	public static Chromosone rsmMutate(Chromosone chromosone) {
 		int x = (int)(Math.random() * GeneSet.size());

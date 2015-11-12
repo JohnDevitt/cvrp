@@ -38,8 +38,9 @@ public class CrossoverService {
 		}
 		
 		offspring = completePmx(mother, offspring);
+		//System.out.println(offspring.validate());
 		
-		return new Chromosone();
+		return offspring;
 	}
 
 	private static Chromosone completePmx(Chromosone mother, Chromosone offspring) {
@@ -53,11 +54,11 @@ public class CrossoverService {
 	}
 
 	private static int pmxInsert(int geneId, Chromosone mother, Chromosone father, Chromosone offspring) {
-		int geneIndex = findIndex(geneId, mother);
+		int geneIndex = mother.getGeneIndex(geneId);
 		boolean occupied = true;
 		do {
-			int geneID = findID(geneIndex, father);
-			geneIndex = findIndex(geneID, mother);
+			int geneID = father.getGene(geneIndex).getID();;
+			geneIndex = mother.getGeneIndex(geneID);
 			occupied = isOccupied(geneIndex, offspring);
 		} while(occupied);
 		

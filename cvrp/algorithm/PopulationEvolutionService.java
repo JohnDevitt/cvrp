@@ -20,7 +20,7 @@ public class PopulationEvolutionService {
  		
  		for(int i = 0; i < population.size(); i++) {
  			if(Math.random() < mutationRate) {
- 				population.setChromosone(i, MutationService.rsmMutate(population.getChromosone(i)));
+ 				nextGenPopulation.setChromosone(i, MutationService.rsmMutate(population.getChromosone(i)));
  			}
  		}
 		return nextGenPopulation;

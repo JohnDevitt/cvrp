@@ -73,7 +73,7 @@ public class Chromosone {
 			} else {
 				delimiterIndex[i] = true;
 				fitness += chromosone[i].getDistance(GeneSet.getDepot());
-				fitness += GeneSet.getDepot().getDistance(chromosone[i]);
+				fitness += GeneSet.getDepot().getDistance(chromosone[i + 1]);
 				load = 0;
 			}
 		}
@@ -97,7 +97,7 @@ public class Chromosone {
 		String result = "login jd15290 23734 \n";
 		result += "name John Devitt \n";
 		result += "algorithm Genetic Algorithm with greedy vehicle assignment \n";
-		result += "cost " + getCVRPFitness() + "\n";
+		result += "cost " + getFitness() + "\n";
 		for(int i = 0; i < length; i++) {
 			if(chromosone[i] == null) {
 				result += "null" + "->";
