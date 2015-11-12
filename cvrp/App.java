@@ -13,13 +13,14 @@ public class App {
 	public static void main(String[] args) {
 		
 		
-		Population population = new Population(1000);
+		Population population = new Population(2500);
 		Chromosone fittest = population.getFittest();
 		
-		for(int generation = 0; generation < 1000000; generation++){
+		int generation = 0;
+		while(true){
+			System.out.println(generation++);
 			if(population.getFittest().getFitness() < fittest.getFitness()) {
 				fittest = population.getFittest();
-				System.out.println("Fittest so far: " + fittest.getFitness() + ". Found in generation: " + generation);
 				System.out.println(population.getFittest());
 				PrintWriter out;
 				try {
@@ -34,6 +35,5 @@ public class App {
 			}
             population = PopulationEvolutionService.evolvePopulation(population);
         }
-        System.out.println(population);
 	}
 }

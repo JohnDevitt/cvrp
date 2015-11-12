@@ -33,7 +33,7 @@ public class CrossoverService {
 		ArrayList<Gene> insertionList = generateInsertionList(mother, offspring, x, y);
 		
 		while(!insertionList.isEmpty()) {
-			int index = pmxInsert(insertionList.get(0).getIndex(), mother, father, offspring);
+			int index = pmxInsert(insertionList.get(0).getId(), mother, father, offspring);
 			offspring.setGene(index, insertionList.remove(0));
 		}
 		
@@ -57,31 +57,12 @@ public class CrossoverService {
 		int geneIndex = mother.getGeneIndex(geneId);
 		boolean occupied = true;
 		do {
-			int geneID = father.getGene(geneIndex).getID();;
+			int geneID = father.getGene(geneIndex).getId();;
 			geneIndex = mother.getGeneIndex(geneID);
-			occupied = isOccupied(geneIndex, offspring);
+			occupied = offspring.isOccupied(geneIndex);
 		} while(occupied);
 		
 		return geneIndex;
-	}
-	
-	private static boolean isOccupied(int geneIndex, Chromosone offspring) {
-		if(offspring.getGene(geneIndex) == null) {
-			return false;
-		}
-		return true;
-	}
-
-	private static int findIndex(int geneID, Chromosone chromosone) {
-		int index = 0;
-		while(chromosone.getGene(index).getIndex() != geneID) {
-			index++;
-		}
-		return index;
-	}
-	
-	private static int findID(int geneIndex, Chromosone chromosone) {
-		return chromosone.getGene(geneIndex).getIndex();
 	}
 	
 	private static ArrayList<Gene> generateInsertionList(Chromosone mother, Chromosone offspring, int x, int y) {

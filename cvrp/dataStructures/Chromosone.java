@@ -33,6 +33,21 @@ public class Chromosone {
 	public Gene getGene(int index) {
 		return chromosone[index];
 	}
+	
+	public int getGeneIndex(int id) {
+		int index = 0;
+		while(chromosone[index].getId() != id) {
+			index++;
+		}
+		return index;
+	}
+	
+	public boolean isOccupied(int index) {
+		if(chromosone[index] == null) {
+			return false;
+		}
+		return true;
+	}
 
 	public void setGene(int index, Gene gene) {
 		chromosone[index] = gene;
@@ -44,20 +59,7 @@ public class Chromosone {
 	
 //-----------------  -------- FITNESS RELATED FUNCTION ----------------------------//
 	
-	public double getFitness() {
-		
-		return getCVRPFitness();
-		/*
-		double fitness = 0;
-		for(int i = 0; i < GeneSet.size() - 1; i++) {
-			fitness += chromosone[i].getDistance(chromosone[i + 1]);
-		}
-		fitness += chromosone[length - 1].getDistance(GeneSet.getDepot());
-		return fitness;
-		*/
-	}
-	
-	public double getCVRPFitness(){
+	public double getFitness(){
 		
 		double fitness = 0.0;
 		
@@ -102,21 +104,21 @@ public class Chromosone {
 			if(chromosone[i] == null) {
 				result += "null" + "->";
 			} else {
-				result += chromosone[i].getIndex() + "->";
+				result += chromosone[i].getId() + "->";
 			}
 			if(delimiterIndex[i] == true) {
-				result += GeneSet.getDepot().getIndex() + "\n" + GeneSet.getDepot().getIndex() + "->";
+				result += GeneSet.getDepot().getId() + "\n" + GeneSet.getDepot().getId() + "->";
 			}
 		}
 		
-		result += GeneSet.getDepot().getIndex();
+		result += GeneSet.getDepot().getId();
 		return result;
 	}
 	
 	public boolean contains(Gene gene) {
 		for(int i = 0; i < length; i++) {
 			if(!(chromosone[i] == null)) {	
-				if(chromosone[i].getIndex() == gene.getIndex()) {
+				if(chromosone[i].getId() == gene.getId()) {
 					return true;
 				}
 			}
@@ -124,23 +126,4 @@ public class Chromosone {
 		
 		return false;
 	}
-	
-	public boolean validate() {
-		MutableGeneSet set = GeneSet.getMutableGeneSet();
-		while(set.size() != 0) {
-			boolean flag = false;
-			Gene gene = set.getElement();
-			if(this.contains(gene)) {
-				flag = true;
-			}
-			if(flag == false) {
-				System.out.println("missing: " + gene.getIndex());
-				System.out.println(toString());
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
 }

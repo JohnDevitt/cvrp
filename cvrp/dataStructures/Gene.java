@@ -4,15 +4,15 @@ public class Gene {
 
 //--------------------------------------- CLASS VARIBLES --------------------------------//
 	
-	private int index;
+	private int id;
 	private int x;
 	private int y;
 	private int demand;
 	
 //------------------------------------- CONSTRUCTORS -------------------------------------//
 	
-	public Gene(int index, int x, int y, int demand) {
-		this.index = index;
+	public Gene(int id, int x, int y, int demand) {
+		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.demand = demand;
@@ -27,8 +27,8 @@ public class Gene {
 
 //--------------------------------- GETTERS AND SETTERS --------------------------------//
 	
-	public int getIndex() {
-		return index;
+	public int getId() {
+		return id;
 	}
 	
 	public int getX() {
