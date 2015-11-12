@@ -97,16 +97,16 @@ public class Chromosone {
 		String result = "login jd15290 23734 \n";
 		result += "name John Devitt \n";
 		result += "algorithm Genetic Algorithm with greedy vehicle assignment \n";
-		// result += "cost " + getCVRPFitness() + "\n";
+		result += "cost " + getCVRPFitness() + "\n";
 		for(int i = 0; i < length; i++) {
 			if(chromosone[i] == null) {
 				result += "null" + "->";
 			} else {
 				result += chromosone[i].getIndex() + "->";
 			}
-			/*if(delimiterIndex[i] == true) {
+			if(delimiterIndex[i] == true) {
 				result += GeneSet.getDepot().getIndex() + "\n" + GeneSet.getDepot().getIndex() + "->";
-			}*/
+			}
 		}
 		
 		result += GeneSet.getDepot().getIndex();
@@ -114,14 +114,11 @@ public class Chromosone {
 	}
 	
 	public boolean contains(Gene gene) {
-		for(int i = 0; i < GeneSet.size(); i++) {
-			if(chromosone[i] == null) {return false;}
-			// Choose == over .equals here as in practice it's totally plausable that two
-			// genes will have the same value, i.e. shallow compare the objects, not deep
-			// compare their values. In a real-life system it would make sense that this
-			// is a configurable value(e.g. An allowDuplicates boolean)
-			if(chromosone[i] == gene) {
-				return true;
+		for(int i = 0; i < length; i++) {
+			if(!(chromosone[i] == null)) {	
+				if(chromosone[i].getIndex() == gene.getIndex()) {
+					return true;
+				}
 			}
 		}
 		

@@ -10,6 +10,7 @@ import cvrp.dataLoader.GeneSet;
 public class CrossoverService {
 
 	public static Chromosone pmxCrossover(Chromosone father, Chromosone mother) {
+		
 		Chromosone offspring = new Chromosone();
 		
 		int x = (int)(Math.random() * GeneSet.size());
@@ -29,80 +30,67 @@ public class CrossoverService {
 			}
 		}
 		
-		//------------------------ SAFE -----------------------------//
+		ArrayList<Gene> insertionList = generateInsertionList(mother, offspring, x, y);
 		
-		// This Gene will go into this index
-		Gene insertionGene;
-		
-		// And replace this gene
-		Gene targetGene;
-		
-		
-		ArrayList<Gene> test = new ArrayList<Gene>();
-		
-		// Loop through the mother Chromosone(swath bounded), find a gene that isn't in the
-		// child
-		for(int i = x; i <= y; i++) {
-			if(!offspring.contains(mother.getGene(i))) {
-				
-				// This gene is the gene to be inserted
-				insertionGene = mother.getGene(i);
-				//// It will replace some Gene in the father
-				targetGene = father.getGene(i);
-				
-				
-				//------------------------------ SAFE ------------------------------//
-				
-				for(int j = 0; j < Chromosone.length(); j++) {
-					if(mother.getGene(j) == (targetGene)) {
-						if(offspring.contains(father.getGene(j))) {
-							targetGene = father.getGene(j);
-							j = 0;
-						} else {
-							offspring.setGene(j, insertionGene);
-						}
-					}
-				}
-				
-				/*
-				boolean inserted = false;
-				// Loop through the mother and find the target gene in the mother.
-				while(inserted == false) {
-					for(int j = 0; j < Chromosone.length(); j++) {
-						// When found ...
-						if(mother.getGene(j).equals(targetGene)) {
-							// If it's already contained
-							if(offspring.contains(father.getGene(j))) {
-								// Reset our target gene and try again
-								targetGene = father.getGene(j);
-							} else {
-								offspring.setGene(j, insertionGene);
-								inserted = true;
-							}
-						}
-					}
-				}
-				*/
-			}
+		while(!insertionList.isEmpty()) {
+			int index = pmxInsert(insertionList.get(0).getIndex(), mother, father, offspring);
+			offspring.setGene(index, insertionList.remove(0));
 		}
-		/*
-		for(int i = 0; i < test.size(); i++) {
-			if(offspring.contains(test.get(i))) {
-				System.out.println("true");
-			} else {
-				System.out.println(false);
-			}
-		}*/
 		
+		offspring = completePmx(mother, offspring);
+		
+		return new Chromosone();
+	}
+
+	private static Chromosone completePmx(Chromosone mother, Chromosone offspring) {
 		for(int i = 0; i < Chromosone.length(); i++) {
-			if(offspring.getGene(i) == null){
+			if(offspring.getGene(i) == null) {
 				offspring.setGene(i, mother.getGene(i));
 			}
 		}
 		
-		//offspring.isValid();
 		return offspring;
+	}
+
+	private static int pmxInsert(int geneId, Chromosone mother, Chromosone father, Chromosone offspring) {
+		int geneIndex = findIndex(geneId, mother);
+		boolean occupied = true;
+		do {
+			int geneID = findID(geneIndex, father);
+			geneIndex = findIndex(geneID, mother);
+			occupied = isOccupied(geneIndex, offspring);
+		} while(occupied);
 		
+		return geneIndex;
+	}
+	
+	private static boolean isOccupied(int geneIndex, Chromosone offspring) {
+		if(offspring.getGene(geneIndex) == null) {
+			return false;
+		}
+		return true;
+	}
+
+	private static int findIndex(int geneID, Chromosone chromosone) {
+		int index = 0;
+		while(chromosone.getGene(index).getIndex() != geneID) {
+			index++;
+		}
+		return index;
+	}
+	
+	private static int findID(int geneIndex, Chromosone chromosone) {
+		return chromosone.getGene(geneIndex).getIndex();
+	}
+	
+	private static ArrayList<Gene> generateInsertionList(Chromosone mother, Chromosone offspring, int x, int y) {
+		ArrayList<Gene> insertionList = new ArrayList<Gene>();
+		for(int i = x; i <=y; i++) {
+			if(!offspring.contains(mother.getGene(i))) {
+				insertionList.add(mother.getGene(i));
+			}
+		}
+		return insertionList;
 	}
 	
 }
