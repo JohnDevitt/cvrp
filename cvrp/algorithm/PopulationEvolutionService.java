@@ -3,6 +3,8 @@ package cvrp.algorithm;
 import cvrp.dataStructures.Chromosone;
 import cvrp.dataStructures.Gene;
 import cvrp.dataStructures.Population;
+import cvrp.algorithm.crossover.AexCrossoverService;
+import cvrp.algorithm.crossover.PmxCrossoverService;
 import cvrp.dataLoader.GeneSet;
 
 public class PopulationEvolutionService {
@@ -14,8 +16,13 @@ public class PopulationEvolutionService {
  		for(int i = 0; i < population.size()/2; i++) {
 			Chromosone father = SelectionService.select(population);
 			Chromosone mother = SelectionService.select(population);
-			nextGenPopulation.setChromosone(i, CrossoverService.pmxCrossover(father, mother));
-			nextGenPopulation.setChromosone(i, CrossoverService.pmxCrossover(mother, father));
+			if(Math.random() < 0.5) {
+				nextGenPopulation.setChromosone(i, PmxCrossoverService.pmxCrossover(father, mother));
+				nextGenPopulation.setChromosone(i, PmxCrossoverService.pmxCrossover(mother, father));
+			} else {
+				nextGenPopulation.setChromosone(i, AexCrossoverService.AexCrossover(father, mother));
+				nextGenPopulation.setChromosone(i, AexCrossoverService.AexCrossover(mother, father));
+			}
 		}
  		
  		for(int i = 0; i < population.size(); i++) {
