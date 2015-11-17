@@ -20,7 +20,6 @@ public class App {
 		while(true){
 			if(population.getFittest().getFitness() < fittest.getFitness()) {
 				fittest = population.getFittest();
-				fittest.improvedFitness();
 				try {
 					out = new PrintWriter("/home/msc15/jd15290/linux/Desktop/Java/best-solution.txt");
 					out.println(fittest.toString());

@@ -61,9 +61,9 @@ public class Chromosone {
 	
 	public double getFitness(){
 		
-		return improvedFitness();
+		// return improvedFitness();
 		
-		/*
+		
 		double fitness = 0.0;
 		
 		while(!chromosone[0].equals(GeneSet.getDepot())) {
@@ -85,8 +85,10 @@ public class Chromosone {
 		
 		fitness += chromosone[length - 1].getDistance(GeneSet.getDepot());
 		return fitness;
-		*/
+		
+		
 	}
+	
 	
 	public double improvedFitness() {
 		
@@ -104,7 +106,7 @@ public class Chromosone {
 			double load = 0;
 			double fitnessVal = 0;
 			int j = i + 1;
-			while(j < length && (load + chromosone[j].getDemand()) <= 500) {
+			while(j < length && load + chromosone[j].getDemand() <= 500) {
 				load = load + chromosone[j].getDemand();
 				if(j == i + 1) {
 					fitnessVal += GeneSet.getDepot().getDistance(chromosone[j]);
@@ -119,9 +121,10 @@ public class Chromosone {
 			}
 		}
 		
+		
 		for(int i = 1; i < length; i++) {
 			if(pred[i] != pred[i - 1]) {
-				delimiterIndex[i] = true;
+				delimiterIndex[i - 1] = true;
 			}
 		}
 		return fitness[length - 1];
@@ -144,11 +147,7 @@ public class Chromosone {
 		result += "algorithm Genetic Algorithm with greedy vehicle assignment \n";
 		result += "cost " + getFitness() + "\n";
 		for(int i = 0; i < length; i++) {
-			if(chromosone[i] == null) {
-				result += "null" + "->";
-			} else {
 				result += chromosone[i].getId() + "->";
-			}
 			if(delimiterIndex[i] == true) {
 				result += GeneSet.getDepot().getId() + "\n" + GeneSet.getDepot().getId() + "->";
 			}

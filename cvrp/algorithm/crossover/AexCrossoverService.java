@@ -17,8 +17,9 @@ public class AexCrossoverService {
 		offspring.setGene(0, contributingParent.getGene(0));
 		
 		int x = 1;
-		while(Math.random() > 0.05 || x < Chromosone.length()) {
+		while(Math.random() > 0.01 && x < Chromosone.length()) {
 			offspring.setGene(x, contributingParent.getGene(x));
+			x++;
 		}
 		
 		int j = updateParentIndex(contributingParent, offspring, x);
@@ -31,6 +32,7 @@ public class AexCrossoverService {
 			}
 			
 			offspring.setGene(i, contributingParent.getGene(j));
+			j = wraparoundIncrement(j);
 		}
 		
 		return offspring;
