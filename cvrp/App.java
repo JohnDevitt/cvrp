@@ -15,11 +15,12 @@ public class App {
 		
 		Population population = new Population(2500);
 		Chromosone fittest = population.getFittest();
+		PrintWriter out;
 		
 		while(true){
 			if(population.getFittest().getFitness() < fittest.getFitness()) {
 				fittest = population.getFittest();
-				PrintWriter out;
+				fittest.improvedFitness();
 				try {
 					out = new PrintWriter("/home/msc15/jd15290/linux/Desktop/Java/best-solution.txt");
 					out.println(fittest.toString());

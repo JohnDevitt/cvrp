@@ -64,6 +64,10 @@ public class GeneSet {
 		GeneSet.getInstance();
 		return depot;
 	}
+	
+	public static Gene getDummyGene() {
+		return new Gene(-1, -1, -1, -1);
+	}
 
 	@Override
 	public String toString() {

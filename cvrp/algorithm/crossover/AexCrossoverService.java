@@ -1,53 +1,72 @@
 package cvrp.algorithm.crossover;
 
+import cvrp.dataLoader.GeneSet;
 import cvrp.dataStructures.Chromosone;
 
 public class AexCrossoverService {
 	
 	public static Chromosone AexCrossover(Chromosone father, Chromosone mother) {
 		Chromosone offspring = new Chromosone();
-		int index = 1, count = 1;
-		int countv2 = 0;
 		
-		Chromosone targetChromosone = new Chromosone();
-		
-		if(Math.random() < 0.5) {
-			targetChromosone = father;
-		} else {
-			targetChromosone = mother;
+		for(int i = 0; i < Chromosone.length(); i++) {
+			offspring.setGene(i, GeneSet.getDummyGene());
 		}
 		
-		offspring.setGene(0, targetChromosone.getGene(0));
+		Chromosone contributingParent = randomlySelectParent(father, mother);
 		
-		while(count < Chromosone.length()) {
-			if(Math.random() < 0.1 || offspring.contains(targetChromosone.getGene(index))) {
-				if(targetChromosone == father) {
-					targetChromosone = mother;
-					int id = offspring.getGene(count - 1).getId();
-					index = mother.getGeneIndex(id) + 1;
-					if(index == Chromosone.length()) {
-						index = 0;
-					}
-				} else {
-					targetChromosone = father;
-					int id = offspring.getGene(count - 1).getId();
-					index = father.getGeneIndex(id) + 1;
-					if(index == Chromosone.length()) {
-						index = 0;
-					}
-				}
+		offspring.setGene(0, contributingParent.getGene(0));
+		
+		int x = 1;
+		while(Math.random() > 0.05 || x < Chromosone.length()) {
+			offspring.setGene(x, contributingParent.getGene(x));
+		}
+		
+		int j = updateParentIndex(contributingParent, offspring, x);
+		
+		for(int i = x; i < Chromosone.length(); i++) {
+			while(offspring.contains(contributingParent.getGene(j))) {
+				contributingParent = swapContributingParent(contributingParent, father, mother);
+				j = updateParentIndex(contributingParent, offspring, i);
+				j = wraparoundIncrement(j);
 			}
 			
-			offspring.setGene(count, targetChromosone.getGene(index));
-			
-			index++;
-			if(index == Chromosone.length()) {
-				index = 0;
-			}
-			count++;
+			offspring.setGene(i, contributingParent.getGene(j));
 		}
 		
 		return offspring;
+}
+	
+	private static Chromosone randomlySelectParent(Chromosone father, Chromosone mother) {
+		if(Math.random() < 0.5) {
+			return father;
+		} else {
+			return mother;
+		}
+	}
+	
+	public static Chromosone swapContributingParent(Chromosone parent, Chromosone father, Chromosone mother) {
+		if(parent.equals(father)) {
+			parent = mother;
+		} else {
+			parent = father;
+		}
+		
+		return parent;
+	}
+	
+	public static int updateParentIndex(Chromosone parent, Chromosone offspring, int i) {
+		int id = offspring.getGene(i - 1).getId();
+		int index = parent.getGeneIndex(id);
+		index = wraparoundIncrement(index);
+		return index;
+	}
+	
+	private static int wraparoundIncrement(int index) {
+		index++;
+		if(index == Chromosone.length()) {
+			index = 0;
+		}
+		return index;
 	}
 
 }

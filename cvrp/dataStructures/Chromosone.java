@@ -61,6 +61,9 @@ public class Chromosone {
 	
 	public double getFitness(){
 		
+		return improvedFitness();
+		
+		/*
 		double fitness = 0.0;
 		
 		while(!chromosone[0].equals(GeneSet.getDepot())) {
@@ -82,6 +85,46 @@ public class Chromosone {
 		
 		fitness += chromosone[length - 1].getDistance(GeneSet.getDepot());
 		return fitness;
+		*/
+	}
+	
+	public double improvedFitness() {
+		
+		while(!chromosone[0].equals(GeneSet.getDepot())) {
+			rotateChromosone();
+		}
+		
+		int[] pred = new int[length];
+		double[] fitness = new double[length];
+		fitness[0] = 0;
+		for(int i = 1; i < length; i++) {
+			fitness[i] = 1000000000;
+		}
+		for(int i = 0; i < length - 1; i++) {
+			double load = 0;
+			double fitnessVal = 0;
+			int j = i + 1;
+			while(j < length && (load + chromosone[j].getDemand()) <= 500) {
+				load = load + chromosone[j].getDemand();
+				if(j == i + 1) {
+					fitnessVal += GeneSet.getDepot().getDistance(chromosone[j]);
+				} else {
+					fitnessVal += chromosone[j - 1].getDistance(chromosone[j]);
+				}
+				if( (fitness[i] + fitnessVal + GeneSet.getDepot().getDistance(chromosone[j])) < fitness[j] ) {
+					fitness[j] = fitness[i] + fitnessVal + GeneSet.getDepot().getDistance(chromosone[j]);
+					pred[j] = i;
+				}
+				j++;
+			}
+		}
+		
+		for(int i = 1; i < length; i++) {
+			if(pred[i] != pred[i - 1]) {
+				delimiterIndex[i] = true;
+			}
+		}
+		return fitness[length - 1];
 	}
 	
 	public void rotateChromosone() {
